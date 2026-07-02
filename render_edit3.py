@@ -99,7 +99,7 @@ def footage_full(t, b):
     sw, sh = src.size
     seg_len = SEG[cid]["frames"] / FPS
     drift = 1.0 + 0.05 * min(1.0, local_t / max(seg_len, 0.1))
-    punch = 1.0 + 0.09 * math.exp(-max(0.0, local_t) / 0.12)
+    punch = 1.0 + 0.04 * math.exp(-max(0.0, local_t) / 0.12)
     zoom = drift * punch
     # 80% height, anchored near the top: keeps the broadcast scorebug
     # (bottom ~15%) out of frame at every zoom level
@@ -196,15 +196,6 @@ def post(img, t, b, fi):
     for hb in (DROP, MAKE_B):
         if 0 <= b - hb < 0.10:
             arr = arr + 70
-    # brief shake on those two moments only
-    for hb in (DROP, MAKE_B):
-        ds = b - hb
-        if 0 <= ds < 1.0:
-            amp = 12 * math.exp(-ds * 4.5)
-            if amp > 1:
-                rng = np.random.default_rng(fi * 7)
-                arr = np.roll(arr, (int(rng.integers(-1, 2) * amp),
-                                    int(rng.integers(-1, 2) * amp)), axis=(0, 1))
     g = _grain[fi % 8]
     g = np.repeat(np.repeat(g, 2, axis=0), 2, axis=1)[:H, :W]
     arr = (arr + g) * vignette()
