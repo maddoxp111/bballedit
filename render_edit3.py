@@ -103,7 +103,7 @@ def footage_full(t, b):
     zoom = drift * punch
     # 80% height, anchored near the top: keeps the broadcast scorebug
     # (bottom ~15%) out of frame at every zoom level
-    ch = int(sh * 0.80 / zoom)
+    ch = int(sh * 0.78 / zoom)
     cw = int(ch * 9 / 16)
     top = int(sh * 0.035)
     xs = TRK[cid]
