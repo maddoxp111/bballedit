@@ -23,7 +23,7 @@ bt = lambda b: OFF + b * P
 DROP = 9
 BLOCKS = [13, 33, 53]          # klabo / walker / kinziger name slams
 ROSTER, FINALE = 69, 77
-CUTS = [b for b in range(DROP, ROSTER, 4)] + [ROSTER, FINALE] + list(range(ROSTER + 2, FINALE, 2))
+CUTS = list(range(DROP, FINALE, 4)) + [FINALE]
 
 subprocess.run([FFMPEG, "-y", "-i", "assets/audio/40_Nights.mp3", "-ac", "2",
                 "-ar", str(SR), "-t", str(DUR), "build/song60.wav"],

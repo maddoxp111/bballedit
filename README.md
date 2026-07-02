@@ -31,9 +31,18 @@ pip install numpy pillow imageio-ffmpeg yt-dlp
 python3 analyze_audio2.py    # beat grid + drop detection -> build/analysis2.json
 # download ESPN clips (ids in build_segments.py) into build/clips/<id>.mp4
 python3 build_segments.py    # finds each clip's money moment, extracts frames
+python3 track_motion.py      # motion-tracks each segment for the virtual camera
 python3 make_audio.py        # song + synthesized SFX (riser/booms/whooshes)
-python3 render_edit2.py      # renders illinois_state_is_back.mp4
+python3 render_edit3.py      # renders illinois_state_is_back.mp4
 ```
+
+The final look (`render_edit3.py`, modeled on a reference TikTok edit): footage
+fills the whole 9:16 frame, a motion-tracked virtual camera pans left/right so
+the action stays centered, punch-in settles + slow drift zoom instead of beat
+pulsing, dip-to-black between player blocks, and almost no text — one
+lowercase cold-open line, a tiny name per player, one closer (Montserrat).
+`render_edit2.py` (blurred-fill layout, heavy typography) is kept for
+reference.
 
 Details:
 

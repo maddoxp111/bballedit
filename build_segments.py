@@ -34,6 +34,8 @@ SEGMENTS = {
     "47613943": (1.7, 0.9),   # Kinziger shot vs Indiana St
     "48382384": (1.7, 0.9),   # Kinziger runner
     "48282239": (5.0, 5.0),   # Kinziger GAME WINNER (finale, long)
+    "48038210": (1.7, 0.9),   # Kinziger nice bucket (bonus)
+    "47716449": (1.7, 0.9),   # Walker fights for and-1 (bonus)
 }
 
 # clips where roar detection misses; explicit [t0, t1] in clip time
@@ -77,7 +79,7 @@ for cid, (pre, post) in SEGMENTS.items():
     fdir = f"build/frames/{cid}"
     os.makedirs(fdir, exist_ok=True)
     subprocess.run([FFMPEG, "-y", "-ss", f"{t0:.3f}", "-i", path, "-t", f"{t1 - t0:.3f}",
-                    "-vf", f"fps={FPS},scale=1080:-2", "-q:v", "3",
+                    "-vf", f"fps={FPS}", "-q:v", "3",
                     f"{fdir}/%04d.jpg"], check=True, capture_output=True)
     nf = len(os.listdir(fdir))
     out[cid] = {"t0": round(t0, 3), "t1": round(t1, 3), "peak": round(peak, 2),
