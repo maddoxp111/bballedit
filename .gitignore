@@ -1,3 +1,4 @@
 build/
 __pycache__/
 yolov8n.pt
+yolov8s.pt
