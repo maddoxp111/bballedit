@@ -96,12 +96,15 @@ f = 105 * np.exp(-bt * 3.4) + 40
 boom = np.tanh(np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-bt * 3.6) * 1.9)
 add(np.stack([boom, boom], 1), HIT_T - 0.02, 0.75)
 
-# --- act 4: the song slams back in on the dunk, beat-aligned with the cuts
-seg = load(SONG, RESUME_SRC, 34.0)
+# --- act 4 into act 5: the song slams back in on the dunk (beat-aligned),
+# then ducks under the coach's reprise and keeps playing to the end
+seg = load(SONG, RESUME_SRC, DUR - HIT_T)
 e = np.ones(len(seg), np.float32)
-k0 = int((73.7 - HIT_T) * SR)            # start easing at act 5
-e[k0:] = np.linspace(1, 0.0, len(seg) - k0)
-add(env(seg * e[:, None], 0.015, 0.0), HIT_T, 0.95)
+k0 = int((73.7 - HIT_T) * SR)            # ease down as act 5 begins
+k1 = min(k0 + int(3.0 * SR), len(seg))
+e[k0:k1] = np.linspace(1, 0.38, k1 - k0)
+e[k1:] = 0.38
+add(env(seg * e[:, None], 0.015, 1.5), HIT_T, 0.95)
 
 # --- act 5: quiet reprise
 add(env(lowpass(load(FT, 26.72, 4.2), 2400), 0.3, 0.9), 81.2, 0.95)

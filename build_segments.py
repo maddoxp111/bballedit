@@ -24,7 +24,7 @@ SEGMENTS = {
     "47614013": (1.7, 0.9),   # Klabo three
     "47195895": (1.7, 0.9),   # Klabo bucket
     "47042256": (1.7, 0.9),   # Klabo dish
-    "47383232": (2.3, 0.3),   # Walker flush (buildup -> flush at the end)
+    "47383232": (2.35, 1.95),   # Walker flush at peak-0.5; window puts it 1.7s in (opener)
     "47614227": (1.7, 0.9),   # Walker and-1
     "48244171": (1.7, 0.9),   # Walker hoop+harm (NIT)
     "47762098": (1.7, 0.9),   # Walker and-1

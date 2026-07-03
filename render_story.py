@@ -51,7 +51,7 @@ DROP_T = 46.0          # first highlight starts (riser begins)
 HIT_T = 47.7           # the dunk lands; music slams back in
 CARD1_T, ACT2_T, ACT3_T, ACT5_T = 18.0, 19.9, 29.9, 73.7
 
-HIGHLIGHTS = ["47041854", "48001037", "47383232", "47716449", "48282097",
+HIGHLIGHTS = ["47383232", "48001037", "47762098", "47716449", "48282097",
               "48038210", "48037850", "48244171", "48282177", "48382384"]
 SLOT = 4 * P           # 4 beats per highlight
 CUT2_T = HIT_T + SLOT  # second clip starts 4 beats after the music hit
