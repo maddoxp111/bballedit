@@ -18,7 +18,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
-W, H, FPS, DUR = 1080, 1920, 30, 88.5
+W, H, FPS, DUR = 1080, 1920, 30, 90.2
 
 SEG = json.load(open("build/segments.json"))
 TRK = json.load(open("build/tracks.json"))
@@ -47,12 +47,14 @@ def font(path, size, weight=None):
 
 FT = "build/tt/7635009865773092110.mp4"
 LOCKER = "build/tt/7621387281575775519.mp4"
-DROP_T = 46.0
-CARD1_T, ACT2_T, ACT3_T, ACT5_T = 18.0, 19.9, 29.9, 72.0
+DROP_T = 46.0          # first highlight starts (riser begins)
+HIT_T = 47.7           # the dunk lands; music slams back in
+CARD1_T, ACT2_T, ACT3_T, ACT5_T = 18.0, 19.9, 29.9, 73.7
 
-HIGHLIGHTS = ["47041854", "48001037", "47383232", "47614227", "48282097",
-              "47474610", "48037850", "48244171", "48282177", "48382384"]
-SLOT = 4 * P  # 4 beats per highlight
+HIGHLIGHTS = ["47041854", "48001037", "47383232", "47716449", "48282097",
+              "48038210", "48037850", "48244171", "48282177", "48382384"]
+SLOT = 4 * P           # 4 beats per highlight
+CUT2_T = HIT_T + SLOT  # second clip starts 4 beats after the music hit
 
 SUBS = [
     (0.1, 2.6, "you gotta fight. you gotta fight together."),
@@ -68,11 +70,11 @@ SUBS = [
     (34.9, 37.6, "there's four words i've been dying to say."),
     (37.6, 40.5, "dying to say."),
     (40.5, 44.5, "WE ARE STILL HERE."),
-    (79.6, 83.4, "we'll always be there for each other."),
+    (81.3, 85.1, "we'll always be there for each other."),
 ]
 RUN_CAPS = [
-    (46.6, 49.2, "they could have left."),
-    (56.9, 59.5, "they ran it back."),
+    (46.2, 47.6, "they could have left."),
+    (57.0, 59.6, "they ran it back."),
 ]
 
 # ---------------------------------------------------------------- sources
@@ -193,12 +195,15 @@ def scene(t):
         arr = tt_frame(LOCKER, 16.0 + (t - ACT3_T))
         return grade(arr, 0.55, 0.85, warm=0.35)
     if t < ACT5_T:                                    # act 4: the run
-        k = min(int((t - DROP_T) / SLOT), len(HIGHLIGHTS) - 1)
-        cid = HIGHLIGHTS[k]
-        local = t - (DROP_T + k * SLOT)
+        if t < CUT2_T:                                # opener rides the riser
+            cid, local = HIGHLIGHTS[0], t - DROP_T
+        else:
+            k = min(int((t - CUT2_T) / SLOT) + 1, len(HIGHLIGHTS) - 1)
+            cid = HIGHLIGHTS[k]
+            local = t - (CUT2_T + (k - 1) * SLOT)
         arr = espn_frame(cid, local, local)
         g = grade(arr, 1.0, 0.95, gamma=1.03)
-        if 0 <= t - DROP_T < 0.1:
+        if 0 <= t - HIT_T < 0.1:                      # flash when the dunk lands
             g = g + 70
         return g
     # act 5: slow-mo eruption + cards

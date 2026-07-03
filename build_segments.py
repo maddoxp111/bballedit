@@ -19,20 +19,20 @@ FPS = 30
 # clip id -> (pre, post) seconds around the roar peak
 SEGMENTS = {
     "47474610": (1.7, 0.9),   # Kinziger dunk (opener)
-    "47041854": (1.7, 0.9),   # Klabo dunk
+    "47041854": (1.7, 2.6),   # Klabo dunk (long tail: opens the highlight run)
     "48001037": (1.7, 0.9),   # Klabo and-1
     "47614013": (1.7, 0.9),   # Klabo three
     "47195895": (1.7, 0.9),   # Klabo bucket
     "47042256": (1.7, 0.9),   # Klabo dish
-    "47383232": (1.7, 0.9),   # Walker flush
+    "47383232": (2.3, 0.3),   # Walker flush (buildup -> flush at the end)
     "47614227": (1.7, 0.9),   # Walker and-1
     "48244171": (1.7, 0.9),   # Walker hoop+harm (NIT)
     "47762098": (1.7, 0.9),   # Walker and-1
-    "48282177": (1.7, 0.9),   # Walker and-1 (NIT)
+    "48282177": (2.3, 0.3),   # Walker and-1 (NIT), flush at the end
     "48282097": (1.7, 0.9),   # Kinziger range 3
     "48037850": (1.7, 0.9),   # Kinziger 3 vs UNI
     "47613943": (1.7, 0.9),   # Kinziger shot vs Indiana St
-    "48382384": (1.7, 0.9),   # Kinziger runner
+    "48382384": (2.2, 0.4),   # Kinziger runner, make near the end
     "48282239": (5.0, 5.0),   # Kinziger GAME WINNER (finale, long)
     "48038210": (1.7, 0.9),   # Kinziger nice bucket (bonus)
     "47716449": (1.7, 0.9),   # Walker fights for and-1 (bonus)
