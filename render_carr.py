@@ -18,7 +18,7 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
-W, H, FPS = 1080, 1920, 30
+W, H, FPS = 1080, 1440, 30  # 3:4 vertical
 DUR = 40.70
 OUTRO_T = 36.5
 REF_AUDIO = "assets/audio/carr_ref_audio.m4a"
@@ -45,7 +45,7 @@ def font(path, size, weight=None):
 
 
 # ---------------------------------------------------------------- captions
-# (word, t_on, t_off);  CURIOUS types out letter by letter from 0.5 to 2.0
+# (word, t_on, t_off) — fixed dead-center, whole word, no movement
 CAPTIONS = [
     ("I'M", 0.0, 0.45),
     ("CURIOUS", 0.5, 2.15),
@@ -55,16 +55,11 @@ CAPTIONS = [
     ("MY", 5.1, 5.75),
     ("ATTENTION", 5.8, 6.9),
 ]
-CAP_DX = {"I'M": 60, "CURIOUS": -30, "FOR": 20, "YOU": -30, "GOT": 10,
-          "MY": -10, "ATTENTION": 0}
 
 
 def caption_at(t):
     for word, on, off in CAPTIONS:
         if on <= t < off:
-            if word == "CURIOUS":
-                n = 3 + int(max(0.0, min(1.0, (t - 0.5) / 1.5)) * 4)  # CUR..CURIOUS
-                return word[:n], word
             return word, word
     return None, None
 
@@ -129,9 +124,8 @@ def scene_footage(t):
         fnt = font(PLAYFAIR, size, 560)
         box = fnt.getbbox(shown)
         tw = box[2] - box[0]
-        cx = W // 2 + CAP_DX.get(full, 0)
-        cy = H // 2 + (40 if full != "ATTENTION" else -140)
-        x, y = cx - tw // 2, cy - (box[3] - box[1]) // 2 - box[1]
+        x = W // 2 - tw // 2
+        y = H // 2 - (box[3] - box[1]) // 2 - box[1]
         d.text((x + 3, y + 3), shown, font=fnt, fill=(10, 10, 12))
         d.text((x, y), shown, font=fnt, fill=(240, 238, 234))
     return img
