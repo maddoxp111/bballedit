@@ -35,25 +35,28 @@ RED = (206, 17, 38)
 WHITE = (244, 244, 246)
 _fonts = {}
 
-# (b0, b1, clip, src_start, speed)
+# (b0, b1, clip, src_start, speed) — everything runs at real speed.
+# Avoided on purpose: 38858052 11.4-14.8 (the camera follows a different
+# Pepperdine player there, Malik is #3), 39688928 21-26.5 (broadcast stats
+# graphics) and 35318773 14.4-15.5 (whip-pan blur).
 CUTS = [
     (5,  12, "47131767",  7.72, 1.00),   # fast-break slam, flush on the drop
     (12, 18, "39688928",  6.17, 1.00),   # three vs San Diego
-    (18, 23, "35318773", 10.72, 1.00),   # transition dime + close-up
-    (23, 28, "38858052",  9.92, 1.00),   # dish for the bucket
-    (28, 33, "38858052", 11.70, 0.62),   # run-back, slowed
-    (33, 39, "47131767", 19.77, 0.75),   # second slam
+    (18, 23, "35318773",  9.60, 1.00),   # transition dime, then Malik #3 close-up
+    (23, 28, "38858052",  8.40, 1.00),   # dish for the bucket
+    (28, 33, "38858052",  3.00, 1.00),
+    (33, 39, "47131767", 17.30, 1.00),   # build-up into the second slam
     (39, 45, "39688928", 15.30, 1.00),   # three, replay angle
-    (45, 50, "47131767",  7.90, 0.50),   # slam again, slow
-    (50, 56, "35318773", 15.60, 1.00),
-    (56, 62, "47131767", 17.30, 1.00),   # build-up into the second slam
-    (62, 68, "38858052",  3.00, 1.00),
-    (68, 74, "47131767", 12.00, 1.00),
-    (74, 80, "39688928",  1.00, 1.00),
-    (80, 86, "35318773",  6.00, 1.00),
-    (86, 92, "39688928", 16.30, 0.60),   # three replay, slower
-    (92, 98, "47131767", 19.90, 0.50),   # second slam, slower
-    (98, 103, "47131767", 8.00, 0.42),   # closing slam, slowest
+    (45, 50, "35318773", 16.10, 1.00),
+    (50, 56, "47131767",  1.00, 1.00),
+    (56, 62, "39688928",  0.80, 1.00),
+    (62, 68, "47131767", 11.80, 1.00),
+    (68, 74, "35318773",  0.80, 1.00),
+    (74, 80, "47131767",  4.20, 1.00),
+    (80, 86, "38858052",  5.20, 1.00),
+    (86, 92, "39688928", 11.30, 1.00),
+    (92, 98, "47131767", 18.90, 1.00),   # second slam again
+    (98, 103, "47131767", 6.80, 1.00),   # closing slam
 ]
 
 
