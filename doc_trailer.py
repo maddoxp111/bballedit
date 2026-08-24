@@ -21,62 +21,62 @@ from PIL import Image, ImageDraw, ImageFont
 
 FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 W, H, FPS, SR = 1920, 1080, 30, 48000
-DUR = 90.0
+DUR = 109.0
 SCOPE_H = int(W / 2.39)                 # 803 -> cinemascope image band
 BAR = (H - SCOPE_H) // 2
 VO_START = 4.5
 DISSOLVE = 0.40                          # default cross-dissolve
 
 SUM = "build/tt/7652790943145299230.mp4"   # summer work, CEFCU Arena
-PRA = "build/tt/7613596617618328863.mp4"   # Arch Madness shootaround
-LOC = "build/tt/7621387281575775519.mp4"   # locker room after the win
-WAKE = "build/clips/48282295.mp4"          # NIT vs Wake Forest
-GW = "build/clips/48282239.mp4"            # the game-winner
-KZ = "build/clips/48282097.mp4"            # Kinziger three
-CW = "build/clips/47383232.mp4"            # Walker flush
-DUNK = "build/clips/47041854.mp4"          # Klabo slam
+GW = "build/clips/48282239.mp4"            # the game-winner (ball in flight only)
+U1 = "build/user/u1.mov"                   # on-court celebration
+U2 = "build/user/u2.mov"                   # bench eruption
+U3 = "build/user/u3.mov"                   # handshake line + locker room
+U4 = "build/user/u4.mov"                   # CEFCU Arena workouts
+U5 = "build/user/u5.mov"                   # huddle
 # stills (Wikimedia Commons) get a slow push instead of motion
-DUSK = "still:assets/stills/dusk.jpg"      # campus skyline at dusk
-TOWERS = "still:assets/stills/towers.jpg"  # Watterson Towers
-MARQUEE = "still:assets/stills/normal.jpg" # the NORMAL marquee, uptown
-UPTOWN = "still:assets/stills/uptown.jpg"  # uptown Normal
+DUSK = "still:assets/stills/dusk.jpg"
+TOWERS = "still:assets/stills/towers.jpg"
+MARQUEE = "still:assets/stills/normal.jpg"
 
 # (t0, t1, src, src_start, speed, ycenter, zoom0, hardcut_in)
-# Cut points are locked to the voiceover: "Normal, Illinois" lands on the
-# marquee, "the Redbirds" on the CEFCU Arena board, "1.7 seconds" on the live
-# wide, and the game-winner drops through the net on the score's impact at
-# 42.35, exactly as the hosts say "Kinziger".
+# Broadcast footage is out apart from the ball in flight (no players in
+# frame), so nobody off the 2026-27 roster appears. Every slot is sized to
+# the material actually available in its source - see validate() - so no
+# shot can run past its clip and freeze.
 SHOTS = [
-    (0.0,  5.0,  DUSK,    0.0,  1.00, 0.52, 1.00, False),
-    (5.0,  10.5, TOWERS,  0.0,  1.00, 0.46, 1.00, False),
-    (10.5, 16.2, MARQUEE, 0.0,  1.00, 0.50, 1.00, False),
-    (16.2, 20.3, UPTOWN,  0.0,  1.00, 0.52, 1.00, False),
-    (20.3, 24.5, SUM,    46.8,  1.00, 0.44, 1.02, False),
-    (24.5, 28.0, SUM,    10.5,  1.00, 0.46, 1.00, False),
-    (28.0, 32.0, SUM,     0.30, 1.00, 0.38, 1.03, False),
-    (32.0, 35.5, PRA,     0.60, 1.00, 0.46, 1.00, False),
-    (35.5, 39.6, WAKE,    6.0,  1.00, 0.52, 1.00, False),
-    (39.6, 41.4, GW,      9.50, 1.00, 0.52, 1.00, True),
-    (41.4, 42.35, GW,    17.00, 1.00, 0.42, 1.00, True),
-    (42.35, 46.0, WAKE,  63.2,  1.00, 0.52, 1.00, True),
-    (46.0, 51.0, WAKE,   59.5,  1.00, 0.52, 1.00, False),
-    (51.0, 55.0, PRA,    26.5,  1.00, 0.46, 1.02, False),
-    (55.0, 58.6, PRA,    20.5,  1.00, 0.46, 1.00, False),
-    (58.6, 62.1, KZ,     18.30, 1.00, 0.50, 1.00, False),
-    (62.1, 65.0, CW,      4.20, 1.00, 0.50, 1.00, False),
-    (65.0, 69.0, PRA,    44.5,  1.00, 0.46, 1.02, False),
-    (69.0, 73.5, SUM,    26.5,  1.00, 0.46, 1.00, False),
-    (73.5, 77.0, SUM,    20.5,  1.00, 0.46, 1.02, False),
-    (77.0, 80.9, SUM,    44.5,  1.00, 0.44, 1.00, False),
-    (80.9, 84.7, DUNK,    8.00, 1.00, 0.50, 1.00, True),
-    (84.7, 87.2, WAKE,   65.5,  1.00, 0.52, 1.00, False),
+    (0.0,   5.5,  DUSK,     0.0,  1.00, 0.52, 1.00, False),
+    (5.5,   10.5, MARQUEE,  0.0,  1.00, 0.50, 1.00, False),
+    (10.5,  16.2, TOWERS,   0.0,  1.00, 0.46, 1.00, False),
+    (16.2,  20.5, U4,       0.20, 1.00, 0.50, 1.00, False),
+    (20.5,  25.0, SUM,      0.30, 1.00, 0.38, 1.03, False),
+    (25.0,  29.0, U4,       9.50, 1.00, 0.50, 1.00, False),
+    (29.0,  33.0, U4,      16.50, 1.00, 0.46, 1.00, False),
+    (33.0,  37.4, U4,      20.80, 1.00, 0.46, 1.00, False),
+    (37.4,  41.4, SUM,     10.50, 1.00, 0.46, 1.00, False),
+    (41.4,  42.35, GW,     17.00, 1.00, 0.42, 1.00, True),
+    (42.35, 46.5, U2,       0.00, 0.66, 0.50, 1.00, True),
+    (46.5,  51.0, U1,       0.00, 0.76, 0.48, 1.00, False),
+    (51.0,  55.0, U1,       3.60, 0.78, 0.48, 1.00, False),
+    (55.0,  58.6, U5,       0.00, 0.78, 0.52, 1.00, False),
+    (58.6,  62.1, U1,       6.90, 0.78, 0.48, 1.00, False),
+    (62.1,  63.9, U3,       0.86, 0.36, 0.50, 1.00, False),
+    (63.9,  69.0, U5,       1.40, 0.46, 0.52, 1.00, False),
+    (69.0,  73.5, U4,       4.80, 1.00, 0.50, 1.00, False),
+    (73.5,  77.5, U4,      25.50, 1.00, 0.48, 1.00, False),
+    (77.5,  81.5, U4,      29.80, 1.00, 0.46, 1.00, False),
+    (81.5,  86.2, SUM,     26.50, 1.00, 0.46, 1.00, False),
+    (86.2,  89.8, U2,       0.60, 0.60, 0.50, 1.00, False),
+    (89.8,  95.5, U1,       0.00, 0.68, 0.48, 1.00, False),
+    (95.5, 100.0, U4,      13.80, 1.00, 0.48, 1.00, False),
+    (100.0, 104.0, U5,      0.20, 0.85, 0.52, 1.00, False),
 ]
-CARD_T = 87.2                            # end title card
+CARD_T = 104.0                            # end title card
 
 # lower-left location titles: (t0, t1, text)
 LOCATIONS = [
     (2.2, 7.0, "NORMAL, ILLINOIS"),
-    (20.9, 24.2, "CEFCU ARENA"),
+    (16.8, 20.2, "CEFCU ARENA"),
 ]
 
 ANTON = "assets/fonts/Anton-Regular.ttf"
@@ -95,6 +95,38 @@ def font(path, size, weight=None):
                 pass
         _fonts[k] = f
     return _fonts[k]
+
+
+def source_duration(path):
+    import re as _re
+    r = subprocess.run([FFMPEG, "-i", path], capture_output=True, text=True)
+    m = _re.search(r"Duration: (\d+):(\d+):([\d.]+)", r.stderr)
+    if not m:
+        return 0.0
+    h, mi, s = m.groups()
+    return int(h) * 3600 + int(mi) * 60 + float(s)
+
+
+def validate():
+    """Every slot must fit inside its source.
+
+    A slot that asks for more material than the clip holds is what made
+    shots freeze on their last frame (and dissolves pull from nothing).
+    Rather than silently clamping, report it so the slot can be resized.
+    """
+    bad = 0
+    for i, (t0, t1, src, s0, sp, yc, z0, hard) in enumerate(SHOTS):
+        if src.startswith("still:"):
+            continue
+        need = (t1 - t0) * sp + DISSOLVE + 0.12
+        have = source_duration(src) - s0
+        flag = "" if have >= need else "  <-- SHORT"
+        if flag:
+            bad += 1
+        print(f"shot {i:02d} {os.path.basename(src)[:10]:12s} "
+              f"need {need:5.2f}s have {have:6.2f}s{flag}")
+    print("OK" if not bad else f"{bad} shot(s) too long for their source")
+    return bad
 
 
 def extract():
@@ -327,6 +359,8 @@ def sheet():
 
 
 def main():
+    if len(sys.argv) > 1 and sys.argv[1] == "validate":
+        sys.exit(1 if validate() else 0)
     if len(sys.argv) > 1 and sys.argv[1] == "extract":
         extract(); return
     if len(sys.argv) > 1 and sys.argv[1] == "sheet":
