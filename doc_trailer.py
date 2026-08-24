@@ -34,10 +34,7 @@ U2 = "build/user/u2.mov"                   # bench eruption
 U3 = "build/user/u3.mov"                   # handshake line + locker room
 U4 = "build/user/u4.mov"                   # CEFCU Arena workouts
 U5 = "build/user/u5.mov"                   # huddle
-# stills (Wikimedia Commons) get a slow push instead of motion
-DUSK = "still:assets/stills/dusk.jpg"
-TOWERS = "still:assets/stills/towers.jpg"
-MARQUEE = "still:assets/stills/normal.jpg"
+DRONE = "build/aerial/drone.mp4"           # aerial tour of Uptown Normal + ISU
 
 # (t0, t1, src, src_start, speed, ycenter, zoom0, hardcut_in)
 # Broadcast footage is out apart from the ball in flight (no players in
@@ -45,12 +42,12 @@ MARQUEE = "still:assets/stills/normal.jpg"
 # the material actually available in its source - see validate() - so no
 # shot can run past its clip and freeze.
 SHOTS = [
-    (0.0,   5.5,  DUSK,     0.0,  1.00, 0.52, 1.00, False),
-    (5.5,   10.5, MARQUEE,  0.0,  1.00, 0.50, 1.00, False),
-    (10.5,  16.2, TOWERS,   0.0,  1.00, 0.46, 1.00, False),
-    (16.2,  20.5, U4,       0.20, 1.00, 0.50, 1.00, False),
-    (20.5,  25.0, SUM,      0.30, 1.00, 0.38, 1.03, False),
-    (25.0,  29.0, U4,       9.50, 1.00, 0.50, 1.00, False),
+    (0.0,   5.5,  DRONE,    8.50, 1.00, 0.42, 1.00, False),
+    (5.5,   10.5, DRONE,   29.50, 1.00, 0.42, 1.00, False),
+    (10.5,  16.2, DRONE,   95.50, 1.00, 0.42, 1.00, False),
+    (16.2,  20.5, DRONE,  116.80, 1.00, 0.42, 1.00, False),
+    (20.5,  25.0, U4,       0.20, 1.00, 0.50, 1.00, False),
+    (25.0,  29.0, SUM,      0.30, 1.00, 0.38, 1.03, False),
     (29.0,  33.0, U4,      16.50, 1.00, 0.46, 1.00, False),
     (33.0,  37.4, U4,      20.80, 1.00, 0.46, 1.00, False),
     (37.4,  41.4, SUM,     10.50, 1.00, 0.46, 1.00, False),
